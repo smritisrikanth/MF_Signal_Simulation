@@ -42,7 +42,7 @@ while (length(count_graph$active_nodes) > 0) {
   merge_step()
 }
 
-count_graph = set_fixed_sample_size(count_graph, sample_size_val = 2000)
+count_graph = set_fixed_sample_size(count_graph, sample_size_val = 5000)
 
 count_graph = generate_count_graph_sample_size(count_graph)
 count_graph = generate_phylogeny(count_graph)
