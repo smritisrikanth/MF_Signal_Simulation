@@ -7,7 +7,7 @@ setwd('/home/ssrikan2/data-kreza1/smriti/qfm2')
 devtools::load_all()
 setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 
-job_id = 4
+job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
 global_step_size = 0.01
 global_target_time = 9.0
