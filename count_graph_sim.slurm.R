@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J mut_gen_sim
+#SBATCH -J count_graph_sim
 #SBATCH --partition=defq
 #SBATCH --array=1-10                    # how many tasks in the array
 #SBATCH --cpus-per-task=4                          # one CPU core per task
@@ -14,4 +14,4 @@ ml anaconda
 conda activate r4-base
 
 # Run R script with a command line argument
-Rscript mut_gen_sim.R
+Rscript signal_simulation.R
