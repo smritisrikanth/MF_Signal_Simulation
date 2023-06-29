@@ -2,7 +2,7 @@
 
 #SBATCH -J mut_gen_sim
 #SBATCH --partition=defq
-#SBATCH --array=1-100                    # how many tasks in the array
+#SBATCH --array=1-200                    # how many tasks in the array
 #SBATCH --cpus-per-task=4                          # one CPU core per task
 #SBATCH -t 01:00:00
 #SBATCH -o try-%j-%a.out

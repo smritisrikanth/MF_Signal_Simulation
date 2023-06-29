@@ -59,4 +59,5 @@ mf_vec = colMeans(chr_mat)
 param_tb$sim_data[[job_id]] = tibble(sequence = names(mf_vec),
                                                       mosaic_fraction = mf_vec)
 
-save(param_tb, file = './param_tb.rda')
+system(paste("echo ",param_tb$filename[job_id], param_tb$num_sim[job_id], tibble(sequence = names(mf_vec),
+                                                                                 mosaic_fraction = mf_vec), ' >> results.txt', sep = " "))
