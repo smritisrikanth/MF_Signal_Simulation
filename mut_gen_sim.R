@@ -57,6 +57,6 @@ m <- spread(cell_mut_tb, mut, value, fill = 0)
 chr_mat = as.matrix(m[-1])
 mf_vec = colMeans(chr_mat)
 
-save(tibble(sequence = names(mf_vec), mosaic_fraction = mf_vec), file = paste0('./output2/', param_tb$filename[job_id], '_', param_tb$num_sim[job_id], '.rda'))
+save(mf_vec, file = paste0('./output2/', param_tb$filename[job_id], '_', param_tb$num_sim[job_id], '.rda'))
 
 
