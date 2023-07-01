@@ -10,7 +10,7 @@ setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 #load('param_tb.rda')
 
-load(paste0('./output_2/count_graph_',job_id,'.rda'))
+load(paste0('./output/count_graph_',job_id,'.rda'))
 
 # define a signal curve
 signal_func = function(x_vec) {
@@ -42,21 +42,26 @@ cell_mut_tb = bind_rows(map(names(tr_tips), function(node_id) {
   #        mut = make_mut(),
   #        value = n_mut)
   # this version generates one row for each mut that occurred
-  as_tibble(
-    expand.grid(cell = tr_tips[[node_id]],
-                mut = map_chr(1:n_mut, function(i) {
-                  make_mut()
-                }))
-  )
+  if (n_mut > 0) {
+    out_tb = expand.grid(node = node_id,
+                         cell = tr_tips[[node_id]],
+                         mut = map_chr(1:n_mut, function(i) {
+                           make_mut()
+                         }))
+  } else {
+    out_tb = NULL
+  }
+  out_tb
+  #return(NULL)
 }))
 
 cell_mut_tb$value = 1
-m <- spread(cell_mut_tb, mut, value, fill = 0)
+m <- spread(cell_mut_tb[2:4], mut, value, fill = 0)
 # m$type <- m$cell
 # m <- m[,c(1,16994,2:16993)]
 chr_mat = as.matrix(m[-1])
 mf_vec = colMeans(chr_mat)
 
-save(mf_vec, file = paste0('./output2_2/mf_vec_', job_id, '.rda'))
+save(mf_vec, file = paste0('./output2_correct/mf_vec_', job_id, '.rda'))
 
 
