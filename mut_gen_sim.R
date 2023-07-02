@@ -15,7 +15,9 @@ load(paste0('./output/count_graph_',job_id,'.rda'))
 # define a signal curve
 signal_func = function(x_vec) {
   val = 1e-9 * ((1/6)* pmin(pmax(0, x_vec), 4) + (-4/15) * pmax(0, x_vec-4))
-  -pmax(val, 0)
+  out_vec = -pmax(val, 0) + 2*10^(-9)/3
+  out_vec[x_vec > 6.5] = 0
+  out_vec
 }
 
 
