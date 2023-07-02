@@ -15,7 +15,7 @@ load(paste0('./output/count_graph_',job_id,'.rda'))
 # define a signal curve
 signal_func = function(x_vec) {
   val = 1e-9 * ((1/6)* pmin(pmax(0, x_vec), 4) + (-4/15) * pmax(0, x_vec-4))
-  pmax(val, 0)
+  -pmax(val, 0)
 }
 
 
@@ -62,6 +62,6 @@ m <- spread(cell_mut_tb[2:4], mut, value, fill = 0)
 chr_mat = as.matrix(m[-1])
 mf_vec = colMeans(chr_mat)
 
-save(mf_vec, file = paste0('./output2_correct/mf_vec_', job_id, '.rda'))
+save(mf_vec, file = paste0('./output2_inv_signal/mf_vec_', job_id, '.rda'))
 
 
