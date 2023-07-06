@@ -10,7 +10,7 @@ setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 #load('param_tb.rda')
 
-load(paste0('./output_3/count_graph_',job_id,'.rda'))
+load(paste0('./output_ab0.65_ss2500/count_graph_',job_id,'.rda'))
 
 # define a signal curve
 signal_func = function(x_vec) {
