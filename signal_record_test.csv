@@ -1,2 +1,2 @@
 name,label,color,commit_start,commit_end,commit_rate,x,leaf,age_base,age_lambda,age_expected,death_rate,commit_bias,renew_asymm_bias,commit_asymm_bias
-Default,Default,#0e4c9c,,,,0,TRUE,0.55,10,0.65,0,,,
+Default,Default,#0e4c9c,,,,0,TRUE,0.65,10000,0.65,0,,,
