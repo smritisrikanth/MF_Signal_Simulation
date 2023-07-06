@@ -10,7 +10,7 @@ setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 #load('param_tb.rda')
 
-load(paste0('./output_ab0.15_ss2500/count_graph_',job_id,'.rda'))
+load(paste0('./output_ab0.65_ss1000/count_graph_',job_id,'.rda'))
 
 # define a signal curve
 signal_func = function(x_vec) {
@@ -64,6 +64,6 @@ m <- spread(cell_mut_tb[2:4], mut, value, fill = 0)
 chr_mat = as.matrix(m[-1])
 mf_vec = colMeans(chr_mat)
 
-save(mf_vec, file = paste0('./output2_ab0.15_ss2500/mf_vec_', job_id, '.rda'))
+save(mf_vec, file = paste0('./output2_ab0.65_ss1000/mf_vec_', job_id, '.rda'))
 
 
