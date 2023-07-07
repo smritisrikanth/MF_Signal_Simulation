@@ -7,6 +7,20 @@ signal_func = function(x_vec) {
 make_mut <- function() {
   paste0(sample(c(letters, 1:9), size = 20, replace = T), collapse = "")
 }
+aveMatFac <- function(mat, fac) {
+  # need to be able to handle character or numeric
+  if (class(fac) != "factor")
+    fac <- factor(fac)
+  rown <- length(levels(fac))
+  coln <- dim(mat)[2]
+  out <- matrix(, rown, coln)
+  ind <- as.numeric(fac)
+  for (i in 1:rown) {
+    out[i,] <- colMeans(mat[ind == i, , drop = F], na.rm = T)
+  }
+  rownames(out) <- levels(fac)
+  return(out)
+}
 
 library(ape)
 library(qfm)
