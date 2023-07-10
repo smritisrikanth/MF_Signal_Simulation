@@ -57,8 +57,8 @@ mut_p$mut_rate = NULL
 setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
-input_folder = 'output'
-output_folder = 'one_cell_hgRNA_mut_ss5000'
+input_folder = 'three_cell_cg_ss5000'
+output_folder = 'three_cell_hgRNA_mut_ss5000'
 
 load(paste0('./',input_folder, '/count_graph_', job_id,'.rda'))
 
@@ -93,6 +93,10 @@ anl = map(anl, function(id) {
 message('DONE')
 
 mf_to_time_tb = mut_frac_mat
+mf_to_time_tb = nest(mf_to_time_tb, data = -c(ID, sequence)) %>%
+  mutate(mosaic_fraction = map_dbl(data, function(data) {
+    mean(data$mosaic_fraction)
+  }))
 mf_to_time_tb$node = map2(mf_to_time_tb$ID, mf_to_time_tb$sequence, function(id, seq) {
   anl[[id]][[seq]]
 })
