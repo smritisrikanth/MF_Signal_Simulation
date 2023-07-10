@@ -65,14 +65,12 @@ chr_mat = simulate_all_phylogeny_bb_v1(count_graph, mut_p)
 chrmat_onehot = chrmat_to_onehot(x = chr_mat$chr_mat, include_unmutated = F)
 mut_frac_mat = aveMatFac(chrmat_onehot, fac = get_type_from_id(rownames(chrmat_onehot)))
 colnames(mut_frac_mat) = colnames(chrmat_onehot)
-Heatmap(mut_frac_mat[, 1:100])
 
-param_tb$mut_frac_mat[[i]] = mut_frac_mat
 
 mut_frac_mat = as.data.frame(mut_frac_mat)
 mut_frac_mat$CellType = rownames(mut_frac_mat)
 
-message(i)
+
 mut_frac_mat = gather(mut_frac_mat, key = 'sequence', value = 'mosaic_fraction', -CellType)
 
 mut_frac_mat$ID = as.numeric(substr(mut_frac_mat$sequence,
