@@ -44,6 +44,7 @@ library(qfm)
 library(tidyverse)
 library(igraph)
 library(ggraph)
+library(purrr)
 setwd('/home/ssrikan2/data-kreza1/smriti/qfm2')
 devtools::load_all()
 
