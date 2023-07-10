@@ -57,8 +57,8 @@ mut_p$mut_rate = NULL
 setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
-input_folder = 'three_cell_cg_ss5000'
-output_folder = 'three_cell_hgRNA_mut_ss5000'
+input_folder = 'output'
+output_folder = 'one_cell_hgRNA_mut_ss5000'
 
 load(paste0('./',input_folder, '/count_graph_', job_id,'.rda'))
 
@@ -82,23 +82,30 @@ mut_frac_mat$sequence = substr(mut_frac_mat$sequence,
                                length(mut_frac_mat$sequence))
 
 
-anl = chr_mat$allele_node_list
-
-message('DONE')
-anl = map(anl, function(id) {
-  message('DONE')
-  setNames(names(id), as.vector(id))
-  message('DONE')
-})
-message('DONE')
+# anl = chr_mat$allele_node_list
+#
+# anl = map(anl, function(id) {
+#   setNames(names(id), as.vector(id))
+# })
 
 mf_to_time_tb = mut_frac_mat
-mf_to_time_tb = nest(mf_to_time_tb, data = -c(ID, sequence)) %>%
-  mutate(mosaic_fraction = map_dbl(data, function(data) {
-    mean(data$mosaic_fraction)
-  }))
+# mf_to_time_tb = nest(mf_to_time_tb, data = -c(ID, sequence)) %>%
+#   mutate(mosaic_fraction = map_dbl(data, function(data) {
+#     mean(data$mosaic_fraction)
+#   }))
+
+mf_to_time_tb$probability = map2_dbl(mf_to_time_tb$ID, mf_to_time_tb$sequence, function(id, seq) {
+  mut_p$recur_vec_list[[id]][[seq]]
+})
+mf_to_time_tb = mf_to_time_tb[mf_to_time_tb$probability <= 0.01,]
 mf_to_time_tb$node = map2(mf_to_time_tb$ID, mf_to_time_tb$sequence, function(id, seq) {
-  anl[[id]][[seq]]
+  node = names(chr_mat$allele_node_list[[id]])[which(seq == chr_mat$allele_node_list[[id]])]
+  if (length(node) > 1) {
+    node[which.min(((count_graph$phylo_edges$out_time+count_graph$phylo_edges$in_time)[match(node, count_graph$phylo_edges$out_node)])/2)]
+  } else {
+    node
+  }
+  #anl[[id]][[seq]]
 })
 mf_to_time_tb = select(mf_to_time_tb, c(mosaic_fraction, node)) %>% mutate(log2mf = log2(mosaic_fraction))
 mf_to_time_tb$node_time = ((count_graph$phylo_edges$out_time+count_graph$phylo_edges$in_time)[match(mf_to_time_tb$node, count_graph$phylo_edges$out_node)])/2
