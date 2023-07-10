@@ -24,6 +24,20 @@ chrmat_to_onehot <- function(x, include_unmutated = F) {
   }
   out
 }
+aveMatFac <- function(mat, fac) {
+  # need to be able to handle character or numeric
+  if (class(fac) != "factor")
+    fac <- factor(fac)
+  rown <- length(levels(fac))
+  coln <- dim(mat)[2]
+  out <- matrix(, rown, coln)
+  ind <- as.numeric(fac)
+  for (i in 1:rown) {
+    out[i,] <- colMeans(mat[ind == i, , drop = F], na.rm = T)
+  }
+  rownames(out) <- levels(fac)
+  return(out)
+}
 
 library(ape)
 library(qfm)
