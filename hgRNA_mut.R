@@ -84,9 +84,13 @@ mut_frac_mat$sequence = substr(mut_frac_mat$sequence,
 
 anl = chr_mat$allele_node_list
 
+message('DONE')
 anl = map(anl, function(id) {
+  message('DONE')
   setNames(names(id), as.vector(id))
+  message('DONE')
 })
+message('DONE')
 
 mf_to_time_tb = mut_frac_mat
 mf_to_time_tb$node = map2(mf_to_time_tb$ID, mf_to_time_tb$sequence, function(id, seq) {
