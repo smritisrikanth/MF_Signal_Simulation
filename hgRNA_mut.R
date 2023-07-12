@@ -1,7 +1,10 @@
 signal_func_hgRNA = function(x_vec) {
   val = 5e-2 * ((1/6)* pmin(pmax(0, x_vec), 4) + (-4/15) * pmax(0, x_vec-4))
-  pmax(val, 0)
+  out_vec = pmax(val, 0)
+  out_vec[x_vec < 1] = 0
+  out_vec
 }
+
 chrmat_to_onehot <- function(x, include_unmutated = F) {
   onehot_list = lapply(1:ncol(x), function(i) {
     y = x[, i]
@@ -58,7 +61,7 @@ setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
 input_folder = 'three_cell_cg_ss5000'
-output_folder = 'three_cell_hgRNA_mut_ss5000'
+output_folder = 'three_cell_hgRNA_mut_ss5000_signal2'
 
 load(paste0('./',input_folder, '/count_graph_', job_id,'.rda'))
 
@@ -88,17 +91,10 @@ mut_frac_mat$sequence = substr(mut_frac_mat$sequence,
 #   setNames(names(id), as.vector(id))
 # })
 
-mf_to_time_tb = mut_frac_mat
-mf_to_time_tb = nest(mf_to_time_tb, data = -c(ID, sequence)) %>%
-  mutate(mosaic_fraction = map_dbl(data, function(data) {
-    mean(data$mosaic_fraction)
-  }))
-
-mf_to_time_tb$probability = map2_dbl(mf_to_time_tb$ID, mf_to_time_tb$sequence, function(id, seq) {
+mut_frac_mat$probability = map2_dbl(mut_frac_mat$ID, mut_frac_mat$sequence, function(id, seq) {
   mut_p$recur_vec_list[[id]][[seq]]
 })
-mf_to_time_tb = mf_to_time_tb[mf_to_time_tb$probability <= 0.01,]
-mf_to_time_tb$node = map2(mf_to_time_tb$ID, mf_to_time_tb$sequence, function(id, seq) {
+mut_frac_mat$node = map2(mut_frac_mat$ID, mut_frac_mat$sequence, function(id, seq) {
   node = names(chr_mat$allele_node_list[[id]])[which(seq == chr_mat$allele_node_list[[id]])]
   if (length(node) > 1) {
     node[which.min(((count_graph$phylo_edges$out_time+count_graph$phylo_edges$in_time)[match(node, count_graph$phylo_edges$out_node)])/2)]
@@ -107,8 +103,29 @@ mf_to_time_tb$node = map2(mf_to_time_tb$ID, mf_to_time_tb$sequence, function(id,
   }
   #anl[[id]][[seq]]
 })
-mf_to_time_tb = select(mf_to_time_tb, c(mosaic_fraction, node)) %>% mutate(log2mf = log2(mosaic_fraction))
-mf_to_time_tb$node_time = ((count_graph$phylo_edges$out_time+count_graph$phylo_edges$in_time)[match(mf_to_time_tb$node, count_graph$phylo_edges$out_node)])/2
-mf_to_time_tb = select(mf_to_time_tb, c(log2mf, node_time))
+mut_frac_mat$node_time = ((count_graph$phylo_edges$out_time+count_graph$phylo_edges$in_time)[match(mut_frac_mat$node, count_graph$phylo_edges$out_node)])/2
 
-save(mut_frac_mat, mf_to_time_tb, file = paste0('./', output_folder, '/mf_tables_', job_id, '.rda'))
+
+# mf_to_time_tb = nest(mf_to_time_tb, data = -c(ID, sequence)) %>%
+#   mutate(mosaic_fraction = map_dbl(data, function(data) {
+#     mean(data$mosaic_fraction)
+#   }))
+# 
+# mf_to_time_tb$probability = map2_dbl(mf_to_time_tb$ID, mf_to_time_tb$sequence, function(id, seq) {
+#   mut_p$recur_vec_list[[id]][[seq]]
+# })
+# mf_to_time_tb = mf_to_time_tb[mf_to_time_tb$probability <= 0.01,]
+# mf_to_time_tb$node = map2(mf_to_time_tb$ID, mf_to_time_tb$sequence, function(id, seq) {
+#   node = names(chr_mat$allele_node_list[[id]])[which(seq == chr_mat$allele_node_list[[id]])]
+#   if (length(node) > 1) {
+#     node[which.min(((count_graph$phylo_edges$out_time+count_graph$phylo_edges$in_time)[match(node, count_graph$phylo_edges$out_node)])/2)]
+#   } else {
+#     node
+#   }
+#   #anl[[id]][[seq]]
+# })
+# mf_to_time_tb = select(mf_to_time_tb, c(mosaic_fraction, node)) %>% mutate(log2mf = log2(mosaic_fraction))
+# mf_to_time_tb$node_time = ((count_graph$phylo_edges$out_time+count_graph$phylo_edges$in_time)[match(mf_to_time_tb$node, count_graph$phylo_edges$out_node)])/2
+# mf_to_time_tb = select(mf_to_time_tb, c(log2mf, node_time))
+
+save(mut_frac_mat, file = paste0('./', output_folder, '/mf_tables_', job_id, '.rda'))
