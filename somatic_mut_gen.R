@@ -93,7 +93,7 @@ mf_mat_cell_type$CellType = rownames(mf_mat_cell_type)
 
 mf_table = gather(mf_mat_cell_type, key = 'sequence', value = 'mosaic_fraction', - CellType)
 mf_table = left_join(cell_mut_tb, mf_to_time_tb %>% select(mut = sequence, mf))
-mf_table$node_time = ((count_graph$phylo_edges$out_time+count_graph$phylo_edges$in_time)[match(mf_to_time_tb$node, count_graph$phylo_edges$out_node)])/2
+mf_table$node_time = ((count_graph$phylo_edges$out_time+count_graph$phylo_edges$in_time)[match(mf_table$node, count_graph$phylo_edges$out_node)])/2
 
 
 # mf_to_time_tb = nest(mf_table, data = -c(sequence)) %>%
