@@ -60,8 +60,8 @@ mut_p$mut_rate = NULL
 setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
-input_folder = 'three_cell_cg_ss5000'
-output_folder = 'three_cell_hgRNA_mut_ss5000_signal2'
+input_folder = 'one_cell_cg_ss5000'
+output_folder = 'one_cell_hgRNA_mut_ss5000_signal2'
 
 load(paste0('./',input_folder, '/count_graph_', job_id,'.rda'))
 
