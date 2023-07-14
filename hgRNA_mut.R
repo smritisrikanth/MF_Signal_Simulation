@@ -1,5 +1,5 @@
 signal_func_hgRNA = function(x_vec) {
-  val = 5e-2 * ((1/6)* pmin(pmax(0, x_vec), 4) + (-4/15) * pmax(0, x_vec-4))
+  val = 5e-1 * ((1/6)* pmin(pmax(0, x_vec), 4) + (-4/15) * pmax(0, x_vec-4))
   out_vec = pmax(val, 0)
   out_vec[x_vec < 1] = 0
   out_vec
@@ -61,7 +61,7 @@ setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
 input_folder = 'one_cell_cg_ss5000'
-output_folder = 'one_cell_hgRNA_mut_ss5000_signal2'
+output_folder = 'one_cell_hgRNA_mut_ss5000_signal3'
 
 load(paste0('./',input_folder, '/count_graph_', job_id,'.rda'))
 
