@@ -60,8 +60,8 @@ mut_p$mut_rate = NULL
 setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
-input_folder = 'output'
-output_folder = 'one_cell_hgRNA_mut_ss5000_signal3'
+input_folder = 'three_cell_cg_ss5000'
+output_folder = 'three_cell_hgRNA_mut_ss5000_signal3'
 
 load(paste0('./',input_folder, '/count_graph_', job_id,'.rda'))
 
@@ -69,6 +69,7 @@ chr_mat = simulate_all_phylogeny_bb_v1(count_graph, mut_p)
 chrmat_onehot = chrmat_to_onehot(x = chr_mat$chr_mat, include_unmutated = F)
 mut_frac_mat = aveMatFac(chrmat_onehot, fac = get_type_from_id(rownames(chrmat_onehot)))
 colnames(mut_frac_mat) = colnames(chrmat_onehot)
+
 
 
 mut_frac_mat = as.data.frame(mut_frac_mat)
