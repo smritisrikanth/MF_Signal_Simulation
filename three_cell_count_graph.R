@@ -72,4 +72,4 @@ count_graph = generate_phylogeny(count_graph)
 
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
-save(count_graph, file = paste0('./three_cell_cg_ss5000/count_graph_', job_id, '.rda'))
+save(count_graph, file = paste0('./three_cell_cg_ss5000_2/count_graph_', job_id, '.rda'))
