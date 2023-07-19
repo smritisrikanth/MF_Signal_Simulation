@@ -1,7 +1,7 @@
 signal_func = function(x_vec) {
-  val = 1e-9 * ((1/6)* pmin(pmax(0, x_vec), 4) + (-4/15) * pmax(0, x_vec-4))
+  val = 1e-9 * ((1/6)* pmin(pmax(0, x_vec-1), 4) + (-1/6) * pmax(0, x_vec-5))
   out_vec = pmax(val, 0) #+ 2*10^(-9)/3
-  out_vec[x_vec < 1] = 0
+  #out_vec[x_vec < 1] = 0
   out_vec
 }
 
@@ -33,8 +33,8 @@ devtools::load_all()
 setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
-input_folder = 'three_cell_cg_ss5000'
-output_folder = 'three_cell_somatic_mut_ss5000_signal2'
+input_folder = 'three_cell_cg_ss5000_2'
+output_folder = 'three_cell_somatic_mut_ss5000_signal4'
 
 load(paste0('./',input_folder, '/count_graph_', job_id,'.rda'))
 
