@@ -18,7 +18,7 @@ names(cell_state_col) = cell_state_meta$name
 
 cell_state_param_list = make_cell_state_param(cell_state_meta)
 
-phy = readRDS("/home/ssrikan2/data-kreza1/smriti/qfm2/intermediate_data/gast_phylo.rds")
+phy = readRDS("./gast_phylo.rds")
 qfm_spec = make_qfm_spec(phy, cell_state_param_list)
 
 plot(phy, show.node.label = T, direction = "downwards", srt = 90)
