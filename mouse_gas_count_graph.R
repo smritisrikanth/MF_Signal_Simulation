@@ -39,8 +39,8 @@ while (length(count_graph$active_nodes) > 0) {
 
 # count_graph = set_fixed_sample_size(count_graph, sample_size_val = 4000)
 # count_graph = set_prop_sample_size(count_graph, sample_size_val = 200)
-count_graph = set_fixed_sample_size(count_graph, sample_size_val = 2000)
+count_graph = set_fixed_sample_size(count_graph, sample_size_val = 1000)
 count_graph = generate_count_graph_sample_size(count_graph)
 count_graph = generate_phylogeny(count_graph)
 
-save(count_graph, file = paste0('./mouse_gas_cg_ss2000/count_graph_', job_id, '.rda'))
+save(count_graph, file = paste0('./mouse_gas_cg_ss1000/count_graph_', job_id, '.rda'))
