@@ -33,9 +33,10 @@ devtools::load_all()
 setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
-input_folder = 'output'
-output_folder = 'one_cell_somatic_mut_ss5000_015_2_signal4'
+input_folder = 'mouse_gas_cg_ss2000'
+output_folder = 'mouse_gas_cg_ss2000_signal4'
 
+job_id = 1
 load(paste0('./',input_folder, '/count_graph_', job_id,'.rda'))
 
 tr = phylo_edges_to_tr(count_graph$phylo_edges)
