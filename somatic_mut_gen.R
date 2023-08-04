@@ -33,8 +33,8 @@ devtools::load_all()
 setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
-input_folder = 'output_ab0.65_ss2500'
-output_folder = 'one_cell_ab065_ss2500_signal4'
+input_folder = 'output_ab0.15_ss2500'
+output_folder = 'one_cell_ab015_ss2500_signal4'
 
 
 load(paste0('./',input_folder, '/count_graph_', job_id,'.rda'))
