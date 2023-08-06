@@ -5,6 +5,13 @@ signal_func_hgRNA = function(x_vec) {
   out_vec
 }
 
+signal_func_hgRNA_decreased = function(x_vec) {
+  val = 5e-2 * ((1/6)* pmin(pmax(0, x_vec-1), 4) + (-1/6) * pmax(0, x_vec-5))
+  out_vec = pmax(val, 0)
+  #out_vec[x_vec < 1] = 0
+  out_vec
+}
+
 chrmat_to_onehot <- function(x, include_unmutated = F) {
   onehot_list = lapply(1:ncol(x), function(i) {
     y = x[, i]
@@ -53,15 +60,15 @@ devtools::load_all()
 
 mut_p = readRDS("./metadata//mut_p_marc1.rds")
 mut_p$mut_rate_func = map(1:length(mut_p$mut_rate), function(i) {
-  signal_func_hgRNA
+  signal_func_hgRNA_decreased
 })
 mut_p$mut_rate = NULL
 
 setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
-input_folder = 'mouse_gas_cg_ss2000'
-output_folder = 'mouse_gas_cg_ss2000_hgRNA_signal4'
+input_folder = 'output'
+output_folder = 'one_cell_hgRNA_mut_signal4_decreased'
 
 load(paste0('./',input_folder, '/count_graph_', job_id,'.rda'))
 
