@@ -5,6 +5,13 @@ signal_func = function(x_vec) {
   out_vec
 }
 
+signal_func_decreased = function(x_vec) {
+  val = 1e-10 * ((1/6)* pmin(pmax(0, x_vec-1), 4) + (-1/6) * pmax(0, x_vec-5))
+  out_vec = pmax(val, 0) #+ 2*10^(-9)/3
+  #out_vec[x_vec < 1] = 0
+  out_vec
+}
+
 make_mut <- function() {
   paste0(sample(c(letters, 1:9), size = 20, replace = T), collapse = "")
 }
@@ -33,8 +40,8 @@ devtools::load_all()
 setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
-input_folder = 'output_ab0.15_ss2500'
-output_folder = 'one_cell_ab015_ss2500_signal4'
+input_folder = 'three_cell_cg_ss5000_015_2_T_5_5'
+output_folder = 'three_cell_somatic_T_5_5_signal4'
 
 
 load(paste0('./',input_folder, '/count_graph_', job_id,'.rda'))
