@@ -60,7 +60,7 @@ devtools::load_all()
 
 mut_p = readRDS("./metadata//mut_p_marc1.rds")
 mut_p$mut_rate_func = map(1:length(mut_p$mut_rate), function(i) {
-  signal_func_hgRNA_decreased
+  signal_func_hgRNA
 })
 mut_p$mut_rate = NULL
 
@@ -68,7 +68,7 @@ setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
 input_folder = 'output'
-output_folder = 'one_cell_hgRNA_mut_signal4_decreased'
+output_folder = 'one_cell_hgRNA_mut_signal4'
 
 load(paste0('./',input_folder, '/count_graph_', job_id,'.rda'))
 
