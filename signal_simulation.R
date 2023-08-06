@@ -42,11 +42,11 @@ while (length(count_graph$active_nodes) > 0) {
   merge_step()
 }
 
-count_graph = set_fixed_sample_size(count_graph, sample_size_val = 1000)
+count_graph = set_fixed_sample_size(count_graph, sample_size_val = 2500)
 
 count_graph = generate_count_graph_sample_size(count_graph)
 count_graph = generate_phylogeny(count_graph)
 
 tr = phylo_edges_to_tr(count_graph$phylo_edges)
 
-save(count_graph, tr, list = c('count_graph', 'tr'), file = paste0('./one_cell_cg_04_ss1000/count_graph_', job_id, '.rda'))
+save(count_graph, tr, list = c('count_graph', 'tr'), file = paste0('./one_cell_cg_04_ss2500/count_graph_', job_id, '.rda'))
