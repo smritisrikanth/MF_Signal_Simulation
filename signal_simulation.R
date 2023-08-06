@@ -49,4 +49,4 @@ count_graph = generate_phylogeny(count_graph)
 
 tr = phylo_edges_to_tr(count_graph$phylo_edges)
 
-save(count_graph, tr, list = c('count_graph', 'tr'), file = paste0('./output_ab0.15_ss1000/count_graph_', job_id, '.rda'))
+save(count_graph, tr, list = c('count_graph', 'tr'), file = paste0('./one_cell_cg_04_ss1000/count_graph_', job_id, '.rda'))
