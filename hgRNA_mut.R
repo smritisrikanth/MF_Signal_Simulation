@@ -65,7 +65,7 @@ devtools::load_all()
 
 mut_p = readRDS("./metadata//mut_p_marc1.rds")
 mut_p$mut_rate_func = map(1:length(mut_p$mut_rate), function(i) {
-  3e-1
+  signal_func_hgRNA_flat
 })
 mut_p$mut_rate = NULL
 
