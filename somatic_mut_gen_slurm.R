@@ -5,7 +5,7 @@
 #SBATCH --array=1-200                    # how many tasks in the array
 #SBATCH --cpus-per-task=4                          # one CPU core per task
 #SBATCH -t 01:00:00
-#SBATCH -o a.out
+#SBATCH -o try-%j-%a.out
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=ssrikan2@jhu.edu
 
