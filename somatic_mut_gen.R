@@ -49,7 +49,7 @@ input_folder = 'output'
 output_folder = 'one_cell_somatic_mut_signal_flat'
 
 
-load(paste0('./',input_folder, '/count_graph_', job_id,'.rda'))
+load(paste0('./',input_folder, '/count_graph_', floor(job_id/2),'.rda'))
 
 tr = phylo_edges_to_tr(count_graph$phylo_edges)
 tr_dd = list_dd_and_tips_mod2(tr)$dd
