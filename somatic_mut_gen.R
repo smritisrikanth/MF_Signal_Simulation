@@ -48,7 +48,7 @@ job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 input_folder = 'output'
 output_folder = 'one_cell_somatic_mut_signal_flat'
 
-
+print(job_id)
 load(paste0('./',input_folder, '/count_graph_', floor(job_id/2),'.rda'))
 
 tr = phylo_edges_to_tr(count_graph$phylo_edges)
