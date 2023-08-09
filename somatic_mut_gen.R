@@ -12,6 +12,11 @@ signal_func_decreased = function(x_vec) {
   out_vec
 }
 
+signal_func_flat = function(x_vec) {
+  val = rep(5e-10, length(x_vec))
+  val
+}
+
 make_mut <- function() {
   paste0(sample(c(letters, 1:9), size = 20, replace = T), collapse = "")
 }
@@ -40,8 +45,8 @@ devtools::load_all()
 setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
-input_folder = 'one_cell_cg_04_ss5000'
-output_folder = 'one_cell_03_10_ss5000_somatic_signal4'
+input_folder = 'output'
+output_folder = 'one_cell_somatic_mut_signal_flat'
 
 
 load(paste0('./',input_folder, '/count_graph_', job_id,'.rda'))
@@ -60,7 +65,7 @@ cell_mut_tb = bind_rows(map(names(tr_tips), function(node_id) {
   # constant rate
   # Lambda = mut_rate * tr_node_time[[node_id]]
   # signal
-  Lambda = integrate(signal_func, tr_node_start[node_id], tr_node_end[node_id])$value
+  Lambda = integrate(signal_func_flat, tr_node_start[node_id], tr_node_end[node_id])$value
   n_mut = rbinom(1, 10^9, 1-exp(-Lambda))
   # this version value is number of occurrences along the edge
   # tibble(cell = tr_tips[[node_id]],
