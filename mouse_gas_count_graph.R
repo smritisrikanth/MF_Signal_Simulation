@@ -21,7 +21,7 @@ cell_state_param_list = make_cell_state_param(cell_state_meta)
 phy = readRDS("./gast_phylo.rds")
 qfm_spec = make_qfm_spec(phy, cell_state_param_list)
 
-plot(phy, show.node.label = T, direction = "downwards", srt = 90)
+# plot(phy, show.node.label = T, direction = "downwards", srt = 90)
 
 count_graph = initialize_count_graph(qfm_spec)
 tt = 0.
