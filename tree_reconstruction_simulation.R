@@ -183,7 +183,7 @@ param_tb$mat = map(1:nrow(param_tb), function(n) {
   }
   
   dist_mat = dist_mat(data = data %>% mutate(sample = tissue), dist = reconstruction_method)
-  save(dist_mat, file = paste0('./', output_folder, '/dist_mat_', reconstruction_method, '_', filtering, '.rda'))
+  save(dist_mat, file = paste0('./', output_folder, '/dist_mat_', reconstruction_method, '_', filtering, '_', job_id, '.rda'))
   dist_mat
 })
 
