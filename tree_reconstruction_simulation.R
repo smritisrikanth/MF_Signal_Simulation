@@ -23,7 +23,7 @@ dist_mat <- function(data,dist=c('jaccard','manhattan')){
       column_to_rownames(var='file2')
     return(D)
   } else{ # add manhattan distance here 
-    log_binary_matrix = normalized_matrix(data)
+    log_binary_matrix = normalized_matrix(data, value_choice = 'logMF')
     return(dist(log_binary_matrix,method = "manhattan"))
     
   }
