@@ -65,7 +65,7 @@ devtools::load_all()
 
 mut_p = readRDS("./metadata//mut_p_marc1.rds")
 
-signal_func_hgRNA_flat = function(x_vec, mut_p, i) {
+signal_func_hgRNA_flat = function(x_vec) {
   val = rep(mut_p$mut_rate[i], length(x_vec))
   val
 }
