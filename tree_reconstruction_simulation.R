@@ -165,7 +165,7 @@ output_folder = 'mouse_ss2000_hgRNA_signal_4_dist_mats'
 p = 2^-9
 
 phy = readRDS("./gast_phylo.rds")
-raw_data = load_simulated_data('./mouse_gas_cg_ss2000_hgRNA_signal4/', job_id)
+raw_data = load_simulated_data('./mouse_gas_cg_ss1000_flat_hgRNA/', job_id)
 raw_data_filtered = raw_data
 raw_data_filtered$data = raw_data$data[raw_data$data$probability < p,]
 
