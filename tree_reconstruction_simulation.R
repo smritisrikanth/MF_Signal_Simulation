@@ -160,7 +160,7 @@ setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
 input_folder = 'mouse_gas_cg_ss2000_hgRNA_signal4'
-output_folder = 'mouse_ss2000_hgRNA_signal_4_dist_mats'
+output_folder = 'mouse_ss1000_hgRNA_flat_dist_mats'
 
 p = 2^-9
 
