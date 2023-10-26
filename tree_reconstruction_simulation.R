@@ -159,31 +159,31 @@ devtools::load_all()
 setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
-input_folder = 'mouse_gas_cg_ss2000_hgRNA_signal4'
-output_folder = 'mouse_ss1000_hgRNA_flat_dist_mats'
+input_folder = 'mouse_gas_cg_ss1000_flat_hgRNA'
+output_folder = 'mouse_ss1000_hgRNA_flat_dist_mats_v2'
 
-p = 2^-9
+
 
 phy = readRDS("./gast_phylo.rds")
 raw_data = load_simulated_data('./mouse_gas_cg_ss1000_flat_hgRNA/', job_id)
-raw_data_filtered = raw_data
-raw_data_filtered$data = raw_data$data[raw_data$data$probability < p,]
 
 load('param_tb.rda')
 
 param_tb$mat = map(1:nrow(param_tb), function(n) {
   print(n)
-  reconstruction_method = param_tb$reconstruction_method[n]
+  distance_method = param_tb$distance_method[n]
   filtering = param_tb$filtering[n]
+  dropout = param_tb$dropout[n]
+  p = 2^(param_tb$filtering[n])
+  d = param_tb$dropout[n]/1000
   
-  if (filtering == 'filtered') {
-    data = raw_data_filtered$data
-  } else {
-    data = raw_data$data
-  }
+  raw_data_filtered = raw_data
+  raw_data_filtered$data = raw_data$data[raw_data$data$probability < p,]
+  raw_data_filtered$data = raw_data_filtered$data[raw_data_filtered$data$mosaic_fraction > d]
+  data = raw_data_filtered$data
   
-  dist_mat = dist_mat(data = data %>% mutate(sample = tissue), dist = reconstruction_method)
-  save(dist_mat, file = paste0('./', output_folder, '/dist_mat_', reconstruction_method, '_', filtering, '_', job_id, '.rda'))
+  dist_mat = dist_mat(data = data %>% mutate(sample = tissue), dist = distance_method)
+  save(dist_mat, file = paste0('./', output_folder, '/dist_mat_', distance_method, '_', , '_', dropout, '_', job_id, '.rda'))
   dist_mat
 })
 
