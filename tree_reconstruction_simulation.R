@@ -179,7 +179,7 @@ param_tb$mat = map(1:nrow(param_tb), function(n) {
   
   raw_data_filtered = raw_data
   raw_data_filtered$data = raw_data$data[raw_data$data$probability < p,]
-  raw_data_filtered$data = raw_data_filtered$data[raw_data_filtered$data$mosaic_fraction > d]
+  raw_data_filtered$data = raw_data_filtered$data[raw_data_filtered$data$mosaic_fraction > d,]
   data = raw_data_filtered$data
   
   dist_mat = dist_mat(data = data %>% mutate(sample = tissue), dist = distance_method)
