@@ -183,7 +183,7 @@ param_tb$mat = map(1:nrow(param_tb), function(n) {
   data = raw_data_filtered$data
   
   dist_mat = dist_mat(data = data %>% mutate(sample = tissue), dist = distance_method)
-  save(dist_mat, file = paste0('./', output_folder, '/dist_mat_', distance_method, '_', , '_', dropout, '_', job_id, '.rda'))
+  save(dist_mat, file = paste0('./', output_folder, '/dist_mat_', distance_method, '_', filtering, '_', dropout, '_', job_id, '.rda'))
   dist_mat
 })
 
