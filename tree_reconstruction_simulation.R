@@ -160,7 +160,7 @@ setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
 job_id = as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
 
 input_folder = 'mouse_gas_cg_ss1000_flat_hgRNA'
-output_folder = 'mouse_ss1000_hgRNA_flat_dist_mats_v2'
+output_folder = 'mouse_ss1000_hgRNA_flat_dist_mats_v3'
 
 
 
@@ -168,6 +168,10 @@ phy = readRDS("./gast_phylo.rds")
 raw_data = load_simulated_data('./mouse_gas_cg_ss1000_flat_hgRNA/', job_id)
 
 load('param_tb.rda')
+# param_tb = as_tibble(expand.grid(distance_method = c('manhattan',
+#                                                      'jaccard'),
+#                                  filtering = c(-10:0),
+#                                  dropout = c(1:10)))
 
 param_tb$mat = map(1:nrow(param_tb), function(n) {
   print(n)
