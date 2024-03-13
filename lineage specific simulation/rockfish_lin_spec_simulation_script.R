@@ -419,13 +419,10 @@ library(ggraph)
 setwd('/home/ssrikan2/data-kreza1/smriti/qfm2')
 devtools::load_all()
 
-setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation')
+setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation/lineage specific simulation/')
 
-
-input_folder = 'lin_spec_sim_input'
-output_folder = 'lin_spec_sim_output'
-
-load(paste0('./', input_folder, './3_13_edge_tb.rda'))
+load('./3_13_edge_tb.rda')
+load('./3_13_edges.rda')
 
 
 library(furrr)
@@ -462,7 +459,7 @@ tr_tips = list_dd_and_tips_from_edge_tb(edge_tb)$tips
 
 program_val = edges %>% select(program3) %>% unnest(cols = program3) %>% pull(program3)
 median_program = median(program_val)
-base_mean = log(10^(0)) - median_program
+base_mean = log(10^(1)) - median_program
 base = rnorm(1,base_mean,1)
 
 i = 0
