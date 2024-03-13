@@ -1,9 +1,10 @@
 #!/bin/bash
 
-#SBATCH -J lin_spec_mut_sim
-#SBATCH --partition=defq
-#SBATCH -c 1                            # one CPU core per task
-#SBATCH -t 03:00:00
+#SBATCH -J tree_reconstruction
+#SBATCH --partition=defq               # how many tasks in the array
+#SBATCH --cpus-per-task=4                          # one CPU core per task
+#SBATCH -t 01:00:00
+#SBATCH -o a.out
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=ssrikan2@jhu.edu
 
