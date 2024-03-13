@@ -535,5 +535,6 @@ cell_mut_tb = left_join(cell_mut_tb, edge_tb %>% select(node_to = to, block))
 cell_mut_tb$value = 1
 
 save(cell_mut_tb, file = './3_13_cell_mut_tb.rda')
+save(edge_tb, file = './3_13_edge_tb_with_pseudotime_and_program.rda')
 
 
