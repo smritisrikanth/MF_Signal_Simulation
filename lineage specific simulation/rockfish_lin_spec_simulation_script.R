@@ -428,6 +428,8 @@ load('./3_13_edges.rda')
 library(furrr)
 plan(multisession, workers = 8)
 
+tip_list = edge_tb$to[!(edge_tb$to %in% edge_tb$from)]
+
 edge_tb$st = map_chr(1:nrow(edge_tb), function(n) 'unassigned')
 j = 0
 edge_tb = assign_state_transition(edge_tb, edge_tb$from[[1]], T)
