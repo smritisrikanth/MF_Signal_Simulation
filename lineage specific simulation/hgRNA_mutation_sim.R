@@ -488,7 +488,7 @@ simulate_phylogeny_bb_v3 <- function(phylo_edges, a_vec) {
     }
   }
   tip_labels = phylo_edges$out_time[!phylo_edges$out_time %in% phylo_edges$in_time]
-  allele_vec = unlist(phylogeny_bb[tip_labels])
+  allele_vec = unlist(phylogeny_bb_node[tip_labels])
   out_obj = list(allele_node = phylogeny_bb_node,
                  allele_vec = allele_vec)
   return(out_obj)
