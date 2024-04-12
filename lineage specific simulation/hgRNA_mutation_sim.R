@@ -488,7 +488,7 @@ simulate_phylogeny_bb_v3 <- function(phylo_edges, a_vec) {
     }
   }
   tip_labels = phylo_edges$out_node[!phylo_edges$out_node %in% phylo_edges$in_node]
-  allele_vec = unlist(phylogeny_bb_node[tip_labels])
+  allele_vec = unlist(phylogeny_bb[tip_labels])
   out_obj = list(allele_node = phylogeny_bb_node,
                  allele_vec = allele_vec)
   return(out_obj)
@@ -536,7 +536,7 @@ load('./3_13_edges.rda')
 
 program_val = edges %>% select(program3) %>% unnest(cols = program3) %>% pull(program3)
 median_program = median(program_val)
-base_mean = log(10^(1)) - median_program
+base_mean = log(10^(0.01)) - median_program
 base = rnorm(1,base_mean,1)
 print(base)
 
@@ -588,18 +588,22 @@ mut_frac_mat$sequence = substr(mut_frac_mat$sequence,
 # mut_frac_mat$probability = map2_dbl(mut_frac_mat$ID, mut_frac_mat$sequence, function(id, seq) {
 #   mut_p$recur_vec_list[[id]][[seq]]
 # })
-mut_frac_mat$node = map2(mut_frac_mat$ID, mut_frac_mat$sequence, function(id, seq) {
-  node = names(chr_mat$allele_node_list[[id]])[which(seq == chr_mat$allele_node_list[[id]])]
-  if (length(node) > 1) {
-    node[which.min(((count_graph$phylo_edges$out_time+count_graph$phylo_edges$in_time)[match(node, count_graph$phylo_edges$out_node)])/2)]
-  } else {
-    node
-  }
-  #anl[[id]][[seq]]
+# mut_frac_mat$node = map2(mut_frac_mat$ID, mut_frac_mat$sequence, function(id, seq) {
+#   node = names(chr_mat$allele_node[[id]])[which(seq == chr_mat$allele_node[[id]])]
+#   if (length(node) > 1) {
+#     node[which.min(((phylo_edges$out_time+phylo_edges$in_time)[match(node, phylo_edges$out_node)])/2)]
+#   } else {
+#     node
+#   }
+#   #anl[[id]][[seq]]
+# })
+mut_frac_mat$node = map_chr(mut_frac_mat$sequence, function(seq) {
+  node = names(chr_mat$allele_node[which(seq == chr_mat$allele_node)])
+  node
 })
 mut_frac_mat$node_time = ((phylo_edges$out_time+phylo_edges$in_time)[match(mut_frac_mat$node, phylo_edges$out_node)])/2
 
-
-save(mut_frac_mat, file = './4_2_mut_frac_mat.rda')
+save(chrmat_onehot, file = './4_12_chrmat_oneshot.rda')
+save(mut_frac_mat, file = './4_12_mut_frac_mat.rda')
 
 
