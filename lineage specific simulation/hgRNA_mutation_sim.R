@@ -536,8 +536,8 @@ load('./3_13_edges.rda')
 
 program_val = edges %>% select(program3) %>% unnest(cols = program3) %>% pull(program3)
 median_program = median(program_val)
-base_mean = log(10^(0.01)) - median_program
-base = rnorm(1,base_mean,1)
+base_mean = log(0.0001) - median_program
+base = rnorm(1,base_mean,log(2))
 print(base)
 
 edge_tb$mut_rate_func = map(edge_tb$program3, function(tb) {
