@@ -598,7 +598,7 @@ mut_frac_mat$sequence = substr(mut_frac_mat$sequence,
 #   #anl[[id]][[seq]]
 # })
 mut_frac_mat$node = map_chr(mut_frac_mat$sequence, function(seq) {
-  node = names(chr_mat$allele_node[which(seq == chr_mat$allele_node)])
+  node = names(chr_mat$allele_node[which(seq == chr_mat$allele_node)])[1]
   node
 })
 mut_frac_mat$node_time = ((phylo_edges$out_time+phylo_edges$in_time)[match(mut_frac_mat$node, phylo_edges$out_node)])/2
