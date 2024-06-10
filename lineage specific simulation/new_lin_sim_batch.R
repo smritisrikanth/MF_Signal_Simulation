@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J new lineage spec sim
+#SBATCH -J new_lin_spec
 #SBATCH --partition=parallel               # how many tasks in the array
 #SBATCH --cpus-per-task=4                          # one CPU core per task
 #SBATCH -t 05:00:00
