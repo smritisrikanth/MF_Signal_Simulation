@@ -136,7 +136,7 @@ break_up_state_jumps <- function(edge_tb) {
     
     tb = NULL
     
-    while(edges$in_node[edges$out_node == jump$to_type] != jump$from_type) {
+    while(edges$in_node[edges$out_node == jump$to_type][[1]] != jump$from_type) {
       last_branch = edges[edges$out_node == jump$to_type,]
       total_pseudotime = edges$end_time[edges$out_node == jump$to_type] - 
         edges$start_time[edges$in_node == jump$from_type][1]
@@ -306,7 +306,7 @@ subsample_tr <- function(tr, ss_val = 1000) {
   tr_samp
 }
 
-library(uwot)
+#library(uwot)
 library(ComplexHeatmap)
 library(qfm)
 library(pracma)
