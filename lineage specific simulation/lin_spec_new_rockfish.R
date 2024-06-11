@@ -131,6 +131,10 @@ break_up_state_jumps <- function(edge_tb) {
   jumps = edge_tb[correct_from_type != edge_tb$from_type &
                     edge_tb$from_type != edge_tb$to_type,]
   
+  if (nrow(jumps) == 0) {
+    return(edge_tb)
+  }
+  
   new_tb_list = map(1:nrow(jumps), function(n) {
     jump = jumps[n,]
     
@@ -306,7 +310,7 @@ subsample_tr <- function(tr, ss_val = 1000) {
   tr_samp
 }
 
-#library(uwot)
+library(uwot)
 library(ComplexHeatmap)
 library(qfm)
 library(pracma)
