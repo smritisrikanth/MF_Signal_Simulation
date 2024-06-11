@@ -412,6 +412,8 @@ edge_length_tb$v0 = map(1:nrow(edge_length_tb), function(n) {
 
 edges = edge_length_tb
 
+save(edge_tb, file = './6_10_edge_tb_before_programs.rda')
+
 #simulate gene programs
 for (i in 1:num_program) {
   
