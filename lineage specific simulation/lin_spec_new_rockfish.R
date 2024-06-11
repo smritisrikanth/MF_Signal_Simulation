@@ -317,26 +317,32 @@ library(furrr)
 plan(multisession, workers = 8)
 
 setwd('/home/ssrikan2/data-kreza1/smriti/MF_Signal_Simulation/lineage specific simulation/')
-
-#create edge topology tb
-edge_length_tb = readRDS('./phy_com_edges.rds')[,-3]
-#edge_length_tb = readRDS('./phy_edges_len.rds')
+load('gene_expr_data_v0.rda')
+edge_length_tb = phy_edges[-3]
 colnames(edge_length_tb) = c('in_node', 'out_node', 'start_time', 'end_time')
-edge_length_tb$edge_length = edge_length_tb$end_time - edge_length_tb$start_time
-root_edge = list('Root', edge_length_tb$in_node[[1]], 0, edge_length_tb$start_time[[1]],
-                 edge_length_tb$start_time[[1]])
-edge_length_tb = rbind(root_edge, edge_length_tb)
-
 edges = edge_length_tb
+edge_tb = complete_edges
+colnames(edge_tb) = c('from', 'to', 'from_type', 'to_type', 'from_time', 'to_time', 'length')
 
-#load in edge phylogeny tb
-edge_tb = readRDS('./tr_edges_com.rds')
-colnames(edge_tb) = c('from', 'to', 'from_time', 'to_time', 'length', 'from_type', 'to_type')
-ind = map_lgl(edge_tb$from, function(from) {
-  length(unique(edge_tb$to_type[edge_tb$from == from])) != 1
-})
-edge_tb$from_type[ind] = "Foregut1"
-edge_tb$to_type[ind] = "Foregut1"
+# #create edge topology tb
+# edge_length_tb = readRDS('./phy_com_edges.rds')[,-3]
+# #edge_length_tb = readRDS('./phy_edges_len.rds')
+# colnames(edge_length_tb) = c('in_node', 'out_node', 'start_time', 'end_time')
+# edge_length_tb$edge_length = edge_length_tb$end_time - edge_length_tb$start_time
+# root_edge = list('Root', edge_length_tb$in_node[[1]], 0, edge_length_tb$start_time[[1]],
+#                  edge_length_tb$start_time[[1]])
+# edge_length_tb = rbind(root_edge, edge_length_tb)
+# 
+# edges = edge_length_tb
+# 
+# #load in edge phylogeny tb
+# edge_tb = readRDS('./tr_edges_com.rds')
+# colnames(edge_tb) = c('from', 'to', 'from_time', 'to_time', 'length', 'from_type', 'to_type')
+# ind = map_lgl(edge_tb$from, function(from) {
+#   length(unique(edge_tb$to_type[edge_tb$from == from])) != 1
+# })
+# edge_tb$from_type[ind] = "Foregut1"
+# edge_tb$to_type[ind] = "Foregut1"
 
 #check
 sum(map_lgl(edge_tb$to_type, function(to_type) {
