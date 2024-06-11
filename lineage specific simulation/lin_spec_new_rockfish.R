@@ -397,7 +397,7 @@ edge_length_tb$eta = map_dbl(1:nrow(edge_length_tb), function(n) {
   states = strsplit(st, '_')[[1]]
   l = t_total$avg_block_length[t_total$st == st]
   t_stable = l * edge_proportion / step_size
-  eta_hat = uniroot(eta_func, c(0.01,0.99), t_stable, delta)
+  eta_hat = uniroot(eta_func, c(0,0.99), t_stable, delta)
   eta_hat$root
 })
 
