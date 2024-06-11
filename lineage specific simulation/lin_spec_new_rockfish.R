@@ -245,7 +245,7 @@ break_up_state_jumps <- function(edge_tb) {
 assign_edge_program_value <- function(edge_tb, from, v0 = rnorm(1,0,0.2), program_name, root = F) {
   
   j <<- j+1
-  if (j %% 100 == 0) {
+  if (j %% 1 == 0) {
     message(j)
   }
   
@@ -268,6 +268,11 @@ assign_edge_program_value <- function(edge_tb, from, v0 = rnorm(1,0,0.2), progra
     if (edge$block != parent_edge$block) {
       states = strsplit(edge$st, '_')[[1]]
       eta = edges$eta[edges$in_node == states[1] & edges$out_node == states[2]]
+      
+      if (is.null(edges$v0[edges$in_node == states[1] & edges$out_node == states[2]][[1]])) {
+        print(to)
+      }
+      
       v0 = edges$v0[edges$in_node == states[1] & edges$out_node == states[2]][[1]][[program_name]]
     }
     
