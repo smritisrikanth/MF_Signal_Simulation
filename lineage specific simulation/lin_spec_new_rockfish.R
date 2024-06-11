@@ -269,10 +269,6 @@ assign_edge_program_value <- function(edge_tb, from, v0 = rnorm(1,0,0.2), progra
       states = strsplit(edge$st, '_')[[1]]
       eta = edges$eta[edges$in_node == states[1] & edges$out_node == states[2]]
       
-      if (is.null(edges$v0[edges$in_node == states[1] & edges$out_node == states[2]][[1]])) {
-        print(to)
-      }
-      
       v0 = edges$v0[edges$in_node == states[1] & edges$out_node == states[2]][[1]][[program_name]]
     }
     
