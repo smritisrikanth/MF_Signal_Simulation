@@ -270,8 +270,8 @@ load('gene_expr_data_v0.rda')
 edge_length_tb = phy_edges[-3]
 colnames(edge_length_tb) = c('in_node', 'out_node', 'start_time', 'end_time')
 edges = edge_length_tb
-# edge_tb = complete_edges
-# colnames(edge_tb) = c('from', 'to', 'from_type', 'to_type', 'from_time', 'to_time', 'length')
+edge_tb = complete_edges
+colnames(edge_tb) = c('from', 'to', 'from_type', 'to_type', 'from_time', 'to_time', 'length')
 # 
 # # #create edge topology tb
 # # edge_length_tb = readRDS('./phy_com_edges.rds')[,-3]
