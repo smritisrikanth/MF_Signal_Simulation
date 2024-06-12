@@ -321,40 +321,40 @@ edges = edge_length_tb
 # edge_tb = assign_block(edge_tb, edge_tb$from[[1]], T)
 # 
 # 
-# #set eta
-# t_total = edge_tb %>% nest(data = -c(block,st)) %>% mutate(block_length = map_dbl(data, function(tb) {
-#   tips = list_dd_and_tips_from_edge_tb(tb)$tips[[tb$from[1]]]
-#   
-#   if (is.null(tips)) {
-#     tips = tb$to[!(tb$to %in% tb$from)]
-#   }
-#   
-#   avg_time = mean(tb$to_time[tb$to %in% tips] - tb$from_time[1])
-#   avg_time
-# })) %>% group_by(st) %>% summarise(avg_block_length = mean(block_length))
-# 
-# step_size = 1/100
-# delta = 0.3^60 * (1-0.3)
-# edge_proportion = 0.5
-# 
-# edge_length_tb$eta = map_dbl(1:nrow(edge_length_tb), function(n) {
-#   st = paste0(edge_length_tb$in_node[n], '_', edge_length_tb$out_node[n])
-#   states = strsplit(st, '_')[[1]]
-#   l = t_total$avg_block_length[t_total$st == st]
-#   t_stable = l * edge_proportion / step_size
-#   eta_hat = uniroot(eta_func, c(0,0.99), t_stable, delta)
-#   eta_hat$root
-# })
-# 
-# #set v0
-# num_program = 2
-# edge_length_tb$v0 = map(1:nrow(edge_length_tb), function(n) {
-#   v0_vec = rnorm(num_program,0,0.2)
-#   names(v0_vec) = map_chr(1:num_program, function(i) paste0('program', i))
-#   v0_vec
-# })
-# 
-# edges = edge_length_tb
+#set eta
+t_total = edge_tb %>% nest(data = -c(block,st)) %>% mutate(block_length = map_dbl(data, function(tb) {
+  tips = list_dd_and_tips_from_edge_tb(tb)$tips[[tb$from[1]]]
+
+  if (is.null(tips)) {
+    tips = tb$to[!(tb$to %in% tb$from)]
+  }
+
+  avg_time = mean(tb$to_time[tb$to %in% tips] - tb$from_time[1])
+  avg_time
+})) %>% group_by(st) %>% summarise(avg_block_length = mean(block_length))
+
+step_size = 1/100
+delta = 0.3^60 * (1-0.3)
+edge_proportion = 0.5
+
+edge_length_tb$eta = map_dbl(1:nrow(edge_length_tb), function(n) {
+  st = paste0(edge_length_tb$in_node[n], '_', edge_length_tb$out_node[n])
+  states = strsplit(st, '_')[[1]]
+  l = t_total$avg_block_length[t_total$st == st]
+  t_stable = l * edge_proportion / step_size
+  eta_hat = uniroot(eta_func, c(0,0.99), t_stable, delta)
+  eta_hat$root
+})
+
+#set v0
+num_program = 2
+edge_length_tb$v0 = map(1:nrow(edge_length_tb), function(n) {
+  v0_vec = rnorm(num_program,0,0.2)
+  names(v0_vec) = map_chr(1:num_program, function(i) paste0('program', i))
+  v0_vec
+})
+
+edges = edge_length_tb
 # 
 # save(edge_tb, file = './6_10_edge_tb_before_programs.rda')
 
