@@ -270,8 +270,8 @@ load('gene_expr_data_v0.rda')
 edge_length_tb = phy_edges[-3]
 colnames(edge_length_tb) = c('in_node', 'out_node', 'start_time', 'end_time')
 edges = edge_length_tb
-edge_tb = complete_edges
-colnames(edge_tb) = c('from', 'to', 'from_type', 'to_type', 'from_time', 'to_time', 'length')
+# edge_tb = complete_edges
+# colnames(edge_tb) = c('from', 'to', 'from_type', 'to_type', 'from_time', 'to_time', 'length')
 # 
 # # #create edge topology tb
 # # edge_length_tb = readRDS('./phy_com_edges.rds')[,-3]
@@ -321,6 +321,10 @@ colnames(edge_tb) = c('from', 'to', 'from_type', 'to_type', 'from_time', 'to_tim
 # edge_tb = assign_block(edge_tb, edge_tb$from[[1]], T)
 # 
 # 
+
+load('./6_10_edge_tb_before_programs.rda')
+
+
 #set eta
 t_total = edge_tb %>% nest(data = -c(block,st)) %>% mutate(block_length = map_dbl(data, function(tb) {
   tips = list_dd_and_tips_from_edge_tb(tb)$tips[[tb$from[1]]]
@@ -357,8 +361,6 @@ edge_length_tb$v0 = map(1:nrow(edge_length_tb), function(n) {
 edges = edge_length_tb
 # 
 # save(edge_tb, file = './6_10_edge_tb_before_programs.rda')
-
-load('./6_10_edge_tb_before_programs.rda')
 
 #simulate gene programs
 for (i in 1:num_program) {
