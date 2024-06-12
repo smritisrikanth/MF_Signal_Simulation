@@ -270,93 +270,95 @@ load('gene_expr_data_v0.rda')
 edge_length_tb = phy_edges[-3]
 colnames(edge_length_tb) = c('in_node', 'out_node', 'start_time', 'end_time')
 edges = edge_length_tb
-edge_tb = complete_edges
-colnames(edge_tb) = c('from', 'to', 'from_type', 'to_type', 'from_time', 'to_time', 'length')
-
-# #create edge topology tb
-# edge_length_tb = readRDS('./phy_com_edges.rds')[,-3]
-# #edge_length_tb = readRDS('./phy_edges_len.rds')
-# colnames(edge_length_tb) = c('in_node', 'out_node', 'start_time', 'end_time')
-# edge_length_tb$edge_length = edge_length_tb$end_time - edge_length_tb$start_time
-# root_edge = list('Root', edge_length_tb$in_node[[1]], 0, edge_length_tb$start_time[[1]],
-#                  edge_length_tb$start_time[[1]])
-# edge_length_tb = rbind(root_edge, edge_length_tb)
+# edge_tb = complete_edges
+# colnames(edge_tb) = c('from', 'to', 'from_type', 'to_type', 'from_time', 'to_time', 'length')
+# 
+# # #create edge topology tb
+# # edge_length_tb = readRDS('./phy_com_edges.rds')[,-3]
+# # #edge_length_tb = readRDS('./phy_edges_len.rds')
+# # colnames(edge_length_tb) = c('in_node', 'out_node', 'start_time', 'end_time')
+# # edge_length_tb$edge_length = edge_length_tb$end_time - edge_length_tb$start_time
+# # root_edge = list('Root', edge_length_tb$in_node[[1]], 0, edge_length_tb$start_time[[1]],
+# #                  edge_length_tb$start_time[[1]])
+# # edge_length_tb = rbind(root_edge, edge_length_tb)
+# # 
+# # edges = edge_length_tb
+# # 
+# # #load in edge phylogeny tb
+# # edge_tb = readRDS('./tr_edges_com.rds')
+# # colnames(edge_tb) = c('from', 'to', 'from_time', 'to_time', 'length', 'from_type', 'to_type')
+# # ind = map_lgl(edge_tb$from, function(from) {
+# #   length(unique(edge_tb$to_type[edge_tb$from == from])) != 1
+# # })
+# # edge_tb$from_type[ind] = "Foregut1"
+# # edge_tb$to_type[ind] = "Foregut1"
+# 
+# #check
+# sum(map_lgl(edge_tb$to_type, function(to_type) {
+#   !(to_type %in% edges$out_node)
+# }))
+# sum(map_lgl(edge_tb$from_type, function(from_type) {
+#   !(from_type %in% edges$in_node | from_type %in% edges$out_node)
+# }))
+# 
+# #break up state jumps
+# edge_tb = break_up_state_jumps(edge_tb)
+# 
+# #check
+# sum(map2_lgl(edge_tb$to_type, edge_tb$from_type, function(to_type, from_type) {
+#   edges$in_node[edges$out_node == to_type] != from_type &
+#     to_type != from_type
+# }))
+# 
+# #assign blocks
+# tip_list = edge_tb$to[!(edge_tb$to %in% edge_tb$from)]
+# 
+# edge_tb$st = map_chr(1:nrow(edge_tb), function(n) 'unassigned')
+# j = 0
+# edge_tb = assign_state_transition_v2(edge_tb, edge_tb$from[[1]], T)
+# edge_tb$block = map_chr(1:nrow(edge_tb), function(n) 'unassigned')
+# j = 0
+# edge_tb = assign_block(edge_tb, edge_tb$from[[1]], T)
+# 
+# 
+# #set eta
+# t_total = edge_tb %>% nest(data = -c(block,st)) %>% mutate(block_length = map_dbl(data, function(tb) {
+#   tips = list_dd_and_tips_from_edge_tb(tb)$tips[[tb$from[1]]]
+#   
+#   if (is.null(tips)) {
+#     tips = tb$to[!(tb$to %in% tb$from)]
+#   }
+#   
+#   avg_time = mean(tb$to_time[tb$to %in% tips] - tb$from_time[1])
+#   avg_time
+# })) %>% group_by(st) %>% summarise(avg_block_length = mean(block_length))
+# 
+# step_size = 1/100
+# delta = 0.3^60 * (1-0.3)
+# edge_proportion = 0.5
+# 
+# edge_length_tb$eta = map_dbl(1:nrow(edge_length_tb), function(n) {
+#   st = paste0(edge_length_tb$in_node[n], '_', edge_length_tb$out_node[n])
+#   states = strsplit(st, '_')[[1]]
+#   l = t_total$avg_block_length[t_total$st == st]
+#   t_stable = l * edge_proportion / step_size
+#   eta_hat = uniroot(eta_func, c(0,0.99), t_stable, delta)
+#   eta_hat$root
+# })
+# 
+# #set v0
+# num_program = 2
+# edge_length_tb$v0 = map(1:nrow(edge_length_tb), function(n) {
+#   v0_vec = rnorm(num_program,0,0.2)
+#   names(v0_vec) = map_chr(1:num_program, function(i) paste0('program', i))
+#   v0_vec
+# })
 # 
 # edges = edge_length_tb
 # 
-# #load in edge phylogeny tb
-# edge_tb = readRDS('./tr_edges_com.rds')
-# colnames(edge_tb) = c('from', 'to', 'from_time', 'to_time', 'length', 'from_type', 'to_type')
-# ind = map_lgl(edge_tb$from, function(from) {
-#   length(unique(edge_tb$to_type[edge_tb$from == from])) != 1
-# })
-# edge_tb$from_type[ind] = "Foregut1"
-# edge_tb$to_type[ind] = "Foregut1"
+# save(edge_tb, file = './6_10_edge_tb_before_programs.rda')
 
-#check
-sum(map_lgl(edge_tb$to_type, function(to_type) {
-  !(to_type %in% edges$out_node)
-}))
-sum(map_lgl(edge_tb$from_type, function(from_type) {
-  !(from_type %in% edges$in_node | from_type %in% edges$out_node)
-}))
-
-#break up state jumps
-edge_tb = break_up_state_jumps(edge_tb)
-
-#check
-sum(map2_lgl(edge_tb$to_type, edge_tb$from_type, function(to_type, from_type) {
-  edges$in_node[edges$out_node == to_type] != from_type &
-    to_type != from_type
-}))
-
-#assign blocks
-tip_list = edge_tb$to[!(edge_tb$to %in% edge_tb$from)]
-
-edge_tb$st = map_chr(1:nrow(edge_tb), function(n) 'unassigned')
-j = 0
-edge_tb = assign_state_transition_v2(edge_tb, edge_tb$from[[1]], T)
-edge_tb$block = map_chr(1:nrow(edge_tb), function(n) 'unassigned')
-j = 0
-edge_tb = assign_block(edge_tb, edge_tb$from[[1]], T)
-
-
-#set eta
-t_total = edge_tb %>% nest(data = -c(block,st)) %>% mutate(block_length = map_dbl(data, function(tb) {
-  tips = list_dd_and_tips_from_edge_tb(tb)$tips[[tb$from[1]]]
-  
-  if (is.null(tips)) {
-    tips = tb$to[!(tb$to %in% tb$from)]
-  }
-  
-  avg_time = mean(tb$to_time[tb$to %in% tips] - tb$from_time[1])
-  avg_time
-})) %>% group_by(st) %>% summarise(avg_block_length = mean(block_length))
-
-step_size = 1/100
-delta = 0.3^60 * (1-0.3)
-edge_proportion = 0.5
-
-edge_length_tb$eta = map_dbl(1:nrow(edge_length_tb), function(n) {
-  st = paste0(edge_length_tb$in_node[n], '_', edge_length_tb$out_node[n])
-  states = strsplit(st, '_')[[1]]
-  l = t_total$avg_block_length[t_total$st == st]
-  t_stable = l * edge_proportion / step_size
-  eta_hat = uniroot(eta_func, c(0,0.99), t_stable, delta)
-  eta_hat$root
-})
-
-#set v0
-num_program = 2
-edge_length_tb$v0 = map(1:nrow(edge_length_tb), function(n) {
-  v0_vec = rnorm(num_program,0,0.2)
-  names(v0_vec) = map_chr(1:num_program, function(i) paste0('program', i))
-  v0_vec
-})
-
-edges = edge_length_tb
-
-save(edge_tb, file = './6_10_edge_tb_before_programs.rda')
+load('./6_10_edge_tb_before_programs.rda')
 
 #simulate gene programs
 for (i in 1:num_program) {
