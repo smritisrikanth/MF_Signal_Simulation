@@ -180,67 +180,6 @@ break_up_state_jumps <- function(edge_tb) {
   
 }
 
-# break_up_state_jumps <- function(tb) {
-#   first_edge = tb[tb$from_time == min(tb$from_time),]
-#   
-#   if (first_edge$from_type == first_edge$to_type) {
-#     return(tb)
-#   }
-#   
-#   while (edges$in_node[edges$out_node == first_edge$to_type] != first_edge$from_type) {
-#     print(tb)
-#     last_branch = edges[edges$out_node == first_edge$to_type,]
-#     if (first_edge$to_pseudo >= last_branch$start_time) {
-#       intermediate_time = last_branch$start_time
-#     } else {
-#       intermediate_time = first_edge$to_pseudo - 0.01
-#     }
-#     
-#     new_edge_from_time = first_edge$length*(intermediate_time - first_edge$from_pseudo)/
-#       (first_edge$to_pseudo - first_edge$from_pseudo) + first_edge$from_time
-#     
-#     if (nrow(tb) > 1) {
-#       new_block = first_edge$block
-#     } else {
-#       new_block = paste0(sample(c(letters, 1:9), size = 10, replace = T), collapse = "")
-#     }
-#     
-#     new_edge = first_edge
-#     
-#     new_edge$from = paste0(first_edge$to, 'prev')
-#     new_edge$to = first_edge$to
-#     new_edge$from_type = last_branch$in_node
-#     new_edge$to_type = first_edge$to_type
-#     new_edge$from_time = new_edge_from_time
-#     new_edge$to_time = first_edge$to_time
-#     new_edge$length = first_edge$to_time - new_edge_from_time
-#     new_edge$st = paste0(last_branch$in_node, '_', first_edge$to_type)
-#     new_edge$block = new_block
-#     new_edge$from_pseudo = intermediate_time
-#     new_edge$to_pseudo = first_edge$to_pseudo
-#     
-#     first_edge$from = first_edge$from
-#     first_edge$to = new_edge$from
-#     first_edge$from_type = first_edge$from_type
-#     first_edge$to_type = new_edge$from_type
-#     first_edge$from_time = first_edge$from_time
-#     first_edge$to_time = new_edge$from_time
-#     first_edge$length = new_edge$from_time - first_edge$from_time
-#     first_edge$st = paste0(first_edge$from_type, '_', new_edge$from_type)
-#     first_edge$block = first_edge$block
-#     first_edge$from_pseudo = first_edge$from_pseudo
-#     first_edge$to_pseudo = new_edge$from_pseudo
-#     
-#     tb = rbind(tb, new_edge)
-#   }
-#   
-#   tb = tb[tb$from_time != min(tb$from_time),]
-#   tb$st = paste0(tb$from_type, '_', tb$to_type)
-#   first_edge$block = paste0(sample(c(letters, 1:9), size = 10, replace = T), collapse = "")
-#   tb = rbind(tb, first_edge)
-#   
-#   tb
-# }
 
 assign_edge_program_value <- function(edge_tb, from, v0 = rnorm(1,0,0.2), program_name, root = F) {
   
@@ -265,10 +204,15 @@ assign_edge_program_value <- function(edge_tb, from, v0 = rnorm(1,0,0.2), progra
     
     edge = edge_tb[edge_tb$to == to,]
     
-    if (edge$block != parent_edge$block) {
+    if (root) {
+      
+      t_stable = edge$length * edge_proportion / step_size
+      eta_hat = uniroot(eta_func, c(0,0.99), t_stable, delta)
+      eta = eta_hat$root
+      v0 = rnorm(1,0,0.2)
+    } else if (edge$block != parent_edge$block) {
       states = strsplit(edge$st, '_')[[1]]
       eta = edges$eta[edges$in_node == states[1] & edges$out_node == states[2]]
-      
       v0 = edges$v0[edges$in_node == states[1] & edges$out_node == states[2]][[1]][[program_name]]
     }
     
